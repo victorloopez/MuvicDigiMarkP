@@ -1,62 +1,377 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import "../styles/estilos.css";
 
+
 function Inicio() {
-  const navigate = useNavigate();
+
 
   return (
+
+
     <div className="main-wrapper">
-      {/* Sección Hero / Presentación de la Empresa */}
-      <header className="hero-section">
+
+
+
+      {/* HERO PRINCIPAL */}
+
+      <section className="hero-section">
+
+
         <div className="hero-content">
-          {/* Se eliminó la línea de Panel de Administración */}
-          <h2 style={{ fontSize: "3rem", margin: "0 0 15px 0", fontWeight: "700", color: "#ffffff" }}>
+
+
+          <h1 className="hero-title">
+
             Muvic DigiMark
+
+          </h1>
+
+
+          <h2>
+
+            Marketing Digital & Desarrollo de Software
+
           </h2>
+
+
+
           <p className="company-description">
-            Soluciones integrales en marketing digital y desarrollo de software a la medida. 
-            Gestiona de forma centralizada tus equipos, marcas aliadas, catálogo de servicios y proyectos activos.
+
+
+            Somos una empresa dedicada al desarrollo de soluciones
+            digitales, creación de software y estrategias de marketing
+            digital que ayudan a empresas y emprendimientos a crecer,
+            mejorar sus procesos y fortalecer su presencia en internet.
+
+
           </p>
-        </div>
-      </header>
 
-      {/* Contenedor de Módulos en Tarjetas */}
-      <main className="dashboard-container">
-        <h3 className="section-title">Módulos del Sistema</h3>
-        
+
+
+        </div>
+
+
+      </section>
+
+
+
+
+
+
+      {/* QUIENES SOMOS */}
+
+
+      <section className="dashboard-container">
+
+
+        <h3 className="section-title">
+
+          ¿Quiénes somos?
+
+        </h3>
+
+
+
+        <div className="module-card-large">
+
+
+          <p>
+
+
+            En Muvic DigiMark combinamos tecnología, creatividad e
+            innovación para ofrecer soluciones digitales adaptadas a
+            las necesidades de cada negocio.
+
+
+            Nuestro objetivo es acompañar a las empresas en su
+            transformación digital mediante herramientas modernas,
+            funcionales y eficientes.
+
+
+          </p>
+
+
+
+        </div>
+
+
+
+      </section>
+
+
+
+
+
+
+
+      {/* SERVICIOS */}
+
+
+
+      <section className="dashboard-container">
+
+
+        <h3 className="section-title">
+
+          Nuestros servicios
+
+        </h3>
+
+
+
         <div className="modules-grid">
-          {/* Tarjeta Usuarios */}
-          <div className="module-card-large" onClick={() => navigate("/usuarios")}>
-            <div className="module-icon-large">👥</div>
-            <h4>Usuarios</h4>
-            <p>Control, asignación y auditoría de cuentas corporativas del equipo técnico.</p>
+
+
+
+          <div className="module-card-large">
+
+
+            <div className="module-icon-large">
+
+              💻
+
+            </div>
+
+
+            <h4>
+
+              Desarrollo de Software
+
+            </h4>
+
+
+            <p>
+
+              Creamos sistemas y aplicaciones personalizadas para
+              optimizar procesos empresariales.
+
+            </p>
+
+
           </div>
 
-          {/* Tarjeta Clientes */}
-          <div className="module-card-large" onClick={() => navigate("/clientes")}>
-            <div className="module-icon-large">💼</div>
-            <h4>Clientes</h4>
-            <p>Base de datos centralizada de marcas aliadas y contactos comerciales directos.</p>
+
+
+
+
+
+
+          <div className="module-card-large">
+
+
+            <div className="module-icon-large">
+
+              📱
+
+            </div>
+
+
+            <h4>
+
+              Marketing Digital
+
+            </h4>
+
+
+            <p>
+
+              Diseñamos estrategias digitales para mejorar la
+              presencia y crecimiento de las marcas.
+
+            </p>
+
+
           </div>
 
-          {/* Tarjeta Servicios */}
-          <div className="module-card-large" onClick={() => navigate("/servicios")}>
-            <div className="module-icon-large">⚡</div>
-            <h4>Servicios</h4>
-            <p>Catálogo general, tarifas base y personalización de soluciones digitales.</p>
+
+
+
+
+
+
+
+          <div className="module-card-large">
+
+
+            <div className="module-icon-large">
+
+              🌐
+
+            </div>
+
+
+            <h4>
+
+              Diseño Web
+
+            </h4>
+
+
+            <p>
+
+              Desarrollamos páginas web modernas, rápidas y
+              adaptadas a cada empresa.
+
+            </p>
+
+
           </div>
 
-          {/* Tarjeta Proyectos */}
-          <div className="module-card-large" onClick={() => navigate("/proyectos")}>
-            <div className="module-icon-large">📁</div>
-            <h4>Proyectos</h4>
-            <p>Monitoreo en tiempo real, cronogramas y estados de entrega de proyectos.</p>
+
+
+
+
+
+
+          <div className="module-card-large">
+
+
+            <div className="module-icon-large">
+
+              🚀
+
+            </div>
+
+
+            <h4>
+
+              Soluciones Digitales
+
+            </h4>
+
+
+            <p>
+
+              Implementamos herramientas tecnológicas para mejorar
+              la productividad de los negocios.
+
+            </p>
+
+
           </div>
+
+
+
         </div>
-      </main>
+
+
+
+      </section>
+
+
+
+
+
+
+
+      {/* CONTACTO */}
+
+
+
+      <section className="hero-section">
+
+
+        <div className="hero-content">
+
+
+
+          <h2>
+
+            Contacta con nosotros
+
+          </h2>
+
+
+
+          <p className="company-description">
+
+
+            📍 Bogotá, Colombia
+
+
+            <br/>
+
+
+            📧 contacto@muvicdigimark.com
+
+
+            <br/>
+
+
+            📱 Instagram: @MuvicDigiMark
+
+
+            <br/>
+
+
+            💼 LinkedIn: Muvic DigiMark
+
+
+
+          </p>
+
+
+
+
+        </div>
+
+
+
+      </section>
+
+
+
+
+
+
+
+      {/* FOOTER */}
+
+
+
+      <footer
+
+        style={{
+
+          background:"#0d233a",
+
+          color:"#fff",
+
+          textAlign:"center",
+
+          padding:"20px"
+
+        }}
+
+      >
+
+
+        <p>
+
+          © 2026 Muvic DigiMark - Marketing Digital y Desarrollo de Software
+
+        </p>
+
+
+        <p>
+
+          Transformamos ideas en soluciones digitales.
+
+        </p>
+
+
+
+      </footer>
+
+
+
     </div>
+
+
   );
+
+
 }
+
 
 export default Inicio;

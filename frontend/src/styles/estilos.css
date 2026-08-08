@@ -276,4 +276,160 @@ html, body, #root, .app-viewport-full, .main-wrapper {
   max-width: 95% !important; /* Deja solo un mínimo respiro elegante para pantallas ultra anchas */
   margin: 0 auto !important;
   padding: 40px 0 !important;
-}s
+}
+/* ==============================
+   CONTENEDOR PRINCIPAL APP
+============================== */
+
+.app-viewport-full{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    background:#f4f6f9;
+}
+
+.app-content{
+    flex:1;
+    width:100%;
+}
+/*=========================================
+  NAVBAR PROFESIONAL
+=========================================*/
+
+.navbar-actions{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.navbar-search{
+    width:220px;
+    padding:10px 15px;
+    border-radius:8px;
+    border:1px solid #d8dce3;
+    outline:none;
+    transition:.3s;
+}
+
+.navbar-search:focus{
+    border-color:#ff6b00;
+}
+
+.navbar-icon{
+    border:none;
+    background:white;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+    transition:.3s;
+}
+
+.navbar-icon:hover{
+    background:#ff6b00;
+    color:white;
+}
+
+.navbar-user{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:white;
+    font-weight:600;
+}
+
+.active-link{
+    color:#ff6b00 !important;
+    border-bottom:2px solid #ff6b00 !important;
+}
+.btn-cerrar{
+
+    background:#ff6b00;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+
+.btn-cerrar:hover{
+
+    background:#e65c00;
+
+}
+/*=========================================
+  DASHBOARD - TARJETAS
+=========================================*/
+
+.module-card-large h1{
+    font-size:42px;
+    font-weight:700;
+    color:#0D253F !important;
+    margin:15px 0;
+}
+
+.module-card-large h3{
+    font-size:22px;
+    font-weight:600;
+    color:#0D253F !important;
+    margin-top:15px;
+    margin-bottom:10px;
+}
+
+.module-card-large p{
+    color:#555 !important;
+    font-size:15px;
+}
+
+.module-card-large svg{
+    margin-bottom:10px;
+}
+/*=========================================
+  DASHBOARD
+=========================================*/
+
+.module-card-large h1{
+    color:#0D253F !important;
+    font-size:42px;
+    font-weight:700;
+}
+
+.module-card-large h3{
+    color:#0D253F !important;
+    font-size:22px;
+    font-weight:600;
+}
+
+.page-header h1{
+    color:#0D253F !important;
+}
+
+.page-header p{
+    color:#555 !important;
+}
+
+/* Títulos de las tarjetas blancas */
+.container h2{
+    color:#0D253F !important;
+    font-weight:700;
+}
+
+.container h3{
+    color:#0D253F !important;
+    font-weight:600;
+}
+
+/* Actividad reciente */
+.container h4{
+    color:#0D253F !important;
+    font-weight:600;
+}
+
+.container p{
+    color:#555;
+}

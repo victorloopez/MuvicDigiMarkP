@@ -1,317 +1,797 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/estilos.css";
 
+
 function Proyectos() {
-  const [proyectos, setProyectos] = useState([]);
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
 
-  const cargarProyectos = () => {
+
+  const [proyectos,setProyectos]=useState([]);
+
+const [nombre,setNombre]=useState("");
+
+const [descripcion,setDescripcion]=useState("");
+
+const [clienteId,setClienteId]=useState("");
+
+const [estado,setEstado]=useState("En desarrollo");
+
+const [avance,setAvance]=useState(0);
+
+const [fechaInicio,setFechaInicio]=useState("");
+
+const [fechaEntrega,setFechaEntrega]=useState("");
+
+const [clientes,setClientes]=useState([]);
+
+  const [calificaciones,setCalificaciones]=useState({});
+
+
+  const navigate=useNavigate();
+
+
+
+
+  const cargarProyectos=()=>{
+
+
     fetch("http://localhost:4000/api/proyectos")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setProyectos(data);
-        } else {
-          setProyectos([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Error al cargar proyectos:", err);
-        alert("Error al cargar los proyectos");
+
+    .then(res=>res.json())
+
+    .then(data=>{
+
+
+      if(Array.isArray(data)){
+
+
+        setProyectos(data);
+
+
+        cargarCalificaciones(data);
+
+
+      }
+      else{
+
         setProyectos([]);
-      });
-  };
 
-  useEffect(() => {
-    cargarProyectos();
-  }, []);
+      }
 
-  const handleAgregar = (e) => {
-    e.preventDefault();
 
-    if (!nombre || !descripcion) {
-      return alert("Por favor complete todos los campos");
-    }
-
-    fetch("http://localhost:4000/api/proyectos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nombre,
-        descripcion,
-      }),
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error en el servidor: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then(() => {
-        alert("Proyecto registrado correctamente");
-        setNombre("");
-        setDescripcion("");
-        cargarProyectos();
-      })
-      .catch((err) => {
-        console.error("Error al agregar:", err);
-        alert(`No se pudo registrar el proyecto. Motivo: ${err.message}`);
-      });
+
+    .catch(err=>{
+
+      console.error(err);
+
+      setProyectos([]);
+
+    });
+
+
   };
 
-  const handleEditar = (id, nombreActual, descActual) => {
-    const nuevoNombre = prompt(
-      "Modificar Nombre del Proyecto:",
+
+
+
+
+
+  
+
+  const cargarClientes=()=>{
+
+    fetch("http://localhost:4000/api/clientes")
+    .then(res=>res.json())
+    .then(data=>{
+      if(Array.isArray(data)) setClientes(data);
+    });
+
+  };
+
+const cargarCalificaciones=(lista)=>{
+
+
+    const valores={};
+
+
+
+    lista.forEach((p)=>{
+
+
+      fetch(
+        `http://localhost:4000/api/calificaciones/${p.id}`
+      )
+
+      .then(res=>res.json())
+
+      .then(data=>{
+
+
+        if(data.length>0){
+
+
+          const promedio=
+
+          data.reduce(
+            (a,b)=>a+b.puntuacion,
+            0
+          )
+          /
+          data.length;
+
+
+
+          valores[p.id]=promedio.toFixed(1);
+
+
+        }
+        else{
+
+
+          valores[p.id]=0;
+
+
+        }
+
+
+
+        setCalificaciones({...valores});
+
+
+
+      });
+
+
+
+    });
+
+
+
+  };
+
+
+
+
+
+  useEffect(()=>{
+
+
+    cargarProyectos();
+    cargarClientes();
+
+  },[]);
+
+
+
+
+
+  const mostrarEstrellas=(valor)=>{
+
+
+    const cantidad=Math.round(valor);
+
+
+    return "⭐".repeat(cantidad)
+    +
+    "☆".repeat(5-cantidad);
+
+
+  };
+
+
+
+
+
+
+
+  const handleAgregar=(e)=>{
+
+e.preventDefault();
+
+if(
+!nombre ||
+!descripcion ||
+!clienteId
+){
+
+alert("Complete todos los campos");
+
+return;
+
+}
+
+fetch(
+"http://localhost:4000/api/proyectos",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+nombre,
+
+descripcion,
+
+cliente_id:clienteId,
+
+estado,
+
+avance,
+
+fecha_inicio:fechaInicio,
+
+fecha_entrega:fechaEntrega
+
+})
+
+}
+
+)
+
+.then(res=>res.json())
+
+.then(()=>{
+
+alert("Proyecto registrado");
+
+setNombre("");
+
+setDescripcion("");
+
+setClienteId("");
+
+setEstado("En desarrollo");
+
+setAvance(0);
+
+setFechaInicio("");
+
+setFechaEntrega("");
+
+cargarProyectos();
+
+});
+
+};
+
+
+  const handleEditar=(id,nombreActual,descActual)=>{
+
+
+    const nuevoNombre=prompt(
+      "Modificar nombre:",
       nombreActual
     );
 
-    const nuevaDesc = prompt(
-      "Modificar Descripción:",
+
+    const nuevaDesc=prompt(
+      "Modificar descripción:",
       descActual
     );
 
-    if (!nuevoNombre || !nuevaDesc) return;
 
-    fetch(`http://localhost:4000/api/proyectos/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nombre: nuevoNombre,
-        descripcion: nuevaDesc,
-      }),
-    })
-      .then(() => {
-        alert("Proyecto actualizado correctamente");
-        cargarProyectos();
-      })
-      .catch((err) => {
-        console.error("Error al editar:", err);
-        alert("Error al actualizar el proyecto");
-      });
-  };
 
-  const handleEliminar = (id) => {
-    if (confirm("¿Está seguro de eliminar este proyecto?")) {
-      fetch(`http://localhost:4000/api/proyectos/${id}`, {
-        method: "DELETE",
-      })
-        .then(() => {
-          alert("Proyecto eliminado correctamente");
-          cargarProyectos();
+    if(!nuevoNombre || !nuevaDesc)
+      return;
+
+
+
+
+    fetch(
+      `http://localhost:4000/api/proyectos/${id}`,
+      {
+
+        method:"PUT",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+          nombre:nuevoNombre,
+
+          descripcion:nuevaDesc
+
         })
-        .catch((err) => {
-          console.error("Error al eliminar:", err);
-          alert("Error al eliminar el proyecto");
-        });
-    }
+
+      }
+
+    )
+
+    .then(()=>{
+
+      alert("Proyecto actualizado");
+
+      cargarProyectos();
+
+    });
+
+
+
   };
 
-  return (
-    <div className="container">
-      <div className="page-header">
-        <h1>Módulo de Proyectos</h1>
-      </div>
 
-      <form
-        onSubmit={handleAgregar}
-        style={{
-          backgroundColor: "#fff",
-          padding: "20px",
-          borderRadius: "8px",
-          marginBottom: "20px",
-          display: "flex",
-          gap: "15px",
-          alignItems: "flex-end",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-        }}
-      >
-        <div style={{ flex: 1 }}>
-          <label
-            style={{
-              fontWeight: "600",
-              display: "block",
-              marginBottom: "5px",
-            }}
-          >
-            Nombre del Proyecto
-          </label>
 
-          <input
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            placeholder="Ej. Campaña Marcas Luxury"
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
 
-        <div style={{ flex: 1 }}>
-          <label
-            style={{
-              fontWeight: "600",
-              display: "block",
-              marginBottom: "5px",
-            }}
-          >
-            Descripción / Estado
-          </label>
 
-          <input
-            type="text"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            placeholder="Ej. Fase de Diseño / Finalizado"
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
 
-        <button
-          type="submit"
-          className="btn-action"
-          style={{
-            backgroundColor: "#ff6b00",
-            padding: "11px 25px",
-          }}
-        >
-          + Guardar Proyecto
-        </button>
-      </form>
+  const handleEliminar=(id)=>{
 
-      <table
-        className="modules-list"
-        style={{ width: "100%" }}
-      >
-        <thead>
-          <tr
-            style={{
-              backgroundColor: "#0d233a",
-              color: "#fff",
-            }}
-          >
-            <th style={{ padding: "12px", width: "10%" }}>
-              ID
-            </th>
 
-            <th
-              style={{
-                padding: "12px",
-                textAlign: "left",
-                width: "35%",
-              }}
-            >
-              Proyecto
-            </th>
+    if(window.confirm("¿Eliminar proyecto?")){
 
-            <th
-              style={{
-                padding: "12px",
-                textAlign: "left",
-                width: "35%",
-              }}
-            >
-              Descripción / Estado
-            </th>
 
-            <th
-              style={{
-                padding: "12px",
-                textAlign: "center",
-                width: "20%",
-              }}
-            >
-              Acciones
-            </th>
-          </tr>
-        </thead>
+      fetch(
+        `http://localhost:4000/api/proyectos/${id}`,
+        {
+          method:"DELETE"
+        }
+      )
 
-        <tbody>
-          {proyectos.length === 0 ? (
-            <tr>
-              <td
-                colSpan="4"
-                style={{
-                  padding: "20px",
-                  textAlign: "center",
-                  color: "#666",
-                }}
-              >
-                No hay proyectos registrados.
-              </td>
-            </tr>
-          ) : (
-            proyectos.map((p) => (
-              <tr key={p.id} className="module-card">
-                <td
-                  className="module-cell"
-                  style={{ textAlign: "center" }}
-                >
-                  {p.id}
-                </td>
+      .then(()=>{
 
-                <td
-                  className="module-cell"
-                  style={{ fontWeight: "bold" }}
-                >
-                  {p.nombre}
-                </td>
 
-                <td className="module-cell">
-                  {p.descripcion}
-                </td>
+        alert("Proyecto eliminado");
 
-                <td
-                  className="module-cell"
-                  style={{ textAlign: "center" }}
-                >
-                  <button
-                    className="btn-action"
-                    style={{
-                      backgroundColor: "#007bff",
-                      marginRight: "10px",
-                    }}
-                    onClick={() =>
-                      handleEditar(
-                        p.id,
-                        p.nombre,
-                        p.descripcion
-                      )
-                    }
-                  >
-                    Editar
-                  </button>
+        cargarProyectos();
 
-                  <button
-                    className="btn-action"
-                    style={{
-                      backgroundColor: "#dc3545",
-                    }}
-                    onClick={() => handleEliminar(p.id)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
+
+      });
+
+
+    }
+
+
+  };
+
+
+
+
+
+
+return (
+
+<div className="container">
+
+
+
+<div className="page-header">
+
+<h1>
+Módulo de Proyectos
+</h1>
+
+</div>
+
+
+
+
+
+<form
+onSubmit={handleAgregar}
+style={{
+background:"#fff",
+padding:"20px",
+borderRadius:"8px",
+marginBottom:"20px",
+display:"flex",
+gap:"15px",
+alignItems:"flex-end"
+}}
+>
+
+
+
+<div style={{flex:1}}>
+
+<label>
+Nombre del Proyecto
+</label>
+
+
+<input
+
+value={nombre}
+
+onChange={
+e=>setNombre(e.target.value)
 }
+
+placeholder="Ej. Página Web Empresa"
+
+style={{
+width:"100%",
+padding:"10px"
+}}
+
+/>
+
+</div>
+
+
+
+
+
+<div style={{flex:1}}>
+
+<label>
+Descripción / Estado
+</label>
+
+
+<input
+
+value={descripcion}
+
+onChange={
+e=>setDescripcion(e.target.value)
+}
+
+placeholder="Ej. Finalizado"
+
+style={{
+width:"100%",
+padding:"10px"
+}}
+
+/>
+
+</div>
+
+<div style={{flex:1}}>
+
+<label>
+Cliente
+</label>
+
+<select
+
+value={clienteId}
+
+onChange={e=>setClienteId(e.target.value)}
+
+style={{
+width:"100%",
+padding:"10px"
+}}
+
+>
+
+<option value="">
+Seleccione un cliente
+</option>
+
+{
+clientes.map((c)=>(
+
+<option
+key={c.id}
+value={c.id}
+>
+
+{c.nombre}
+
+</option>
+
+))
+}
+
+</select>
+
+</div>
+<div style={{flex:1}}>
+
+<label>Estado</label>
+
+<select
+value={estado}
+onChange={e=>setEstado(e.target.value)}
+style={{
+width:"100%",
+padding:"10px"
+}}
+>
+
+<option>En desarrollo</option>
+<option>En revisión</option>
+<option>Finalizado</option>
+
+</select>
+
+</div>
+<div style={{flex:1}}>
+
+<label>Avance (%)</label>
+
+<input
+type="number"
+min="0"
+max="100"
+value={avance}
+onChange={e=>setAvance(e.target.value)}
+style={{
+width:"100%",
+padding:"10px"
+}}
+/>
+
+</div>
+<div style={{flex:1}}>
+
+<label>Fecha inicio</label>
+
+<input
+type="date"
+value={fechaInicio}
+onChange={e=>setFechaInicio(e.target.value)}
+style={{
+width:"100%",
+padding:"10px"
+}}
+/>
+
+</div>
+<div style={{flex:1}}>
+
+<label>Fecha entrega</label>
+
+<input
+type="date"
+value={fechaEntrega}
+onChange={e=>setFechaEntrega(e.target.value)}
+style={{
+width:"100%",
+padding:"10px"
+}}
+/>
+
+</div>
+<button
+className="btn-action"
+style={{
+background:"#ff6b00"
+}}
+>
++ Guardar Proyecto
+
+</button>
+
+
+
+</form>
+
+
+
+
+
+
+
+<table
+className="modules-list"
+style={{width:"100%"}}
+>
+
+
+<thead>
+
+<tr
+style={{
+background:"#0d233a",
+color:"#fff"
+}}
+>
+
+<th>ID</th>
+<th>Proyecto</th>
+<th>Cliente</th>
+<th>Estado</th>
+<th>Avance</th>
+<th>Inicio</th>
+<th>Entrega</th>
+<th>Valoración</th>
+<th>Acciones</th>
+
+
+</tr>
+
+</thead>
+
+
+
+
+
+<tbody>
+
+
+{
+proyectos.length===0
+
+?
+
+<tr>
+
+<td colSpan="5">
+
+No hay proyectos registrados.
+
+</td>
+
+</tr>
+
+
+:
+
+
+proyectos.map(p=>(
+
+
+
+<tr key={p.id}>
+
+<td>{p.id}</td>
+
+<td>
+<strong>{p.nombre}</strong>
+<br/>
+<small>{p.descripcion}</small>
+</td>
+
+<td>{p.cliente_id}</td>
+
+<td>{p.estado}</td>
+
+<td>{p.avance}%</td>
+
+<td>{p.fecha_inicio}</td>
+
+<td>{p.fecha_entrega}</td>
+
+
+
+
+
+<td
+style={{
+textAlign:"center"
+}}
+>
+
+
+{
+
+calificaciones[p.id]
+
+?
+
+<>
+
+<div>
+{mostrarEstrellas(
+Number(calificaciones[p.id])
+)}
+</div>
+
+<small>
+{calificaciones[p.id]} / 5
+</small>
+
+</>
+
+:
+
+"Sin calificar"
+
+
+}
+
+
+</td>
+
+
+
+
+
+<td
+style={{
+textAlign:"center"
+}}
+>
+
+
+<button
+className="btn-action"
+style={{
+background:"#007bff"
+}}
+onClick={()=>handleEditar(
+p.id,
+p.nombre,
+p.descripcion
+)}
+>
+
+Editar
+
+</button>
+
+
+
+<button
+className="btn-action"
+style={{
+background:"#c8192b"
+}}
+onClick={()=>handleEliminar(p.id)}
+>
+
+Eliminar
+
+</button>
+
+
+
+<button
+className="btn-action"
+style={{
+background:"#148e55"
+}}
+onClick={()=>navigate(`/comentarios/${p.id}`)}
+>
+
+Comentarios
+
+</button>
+
+
+
+<button
+className="btn-action"
+style={{
+background:"#ffc107",
+color:"#000"
+}}
+onClick={()=>navigate(`/calificaciones/${p.id}`)}
+>
+
+⭐ Calificar
+
+</button>
+
+
+
+</td>
+
+
+
+</tr>
+
+
+))
+
+
+}
+
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+);
+
+
+}
+
 
 export default Proyectos;

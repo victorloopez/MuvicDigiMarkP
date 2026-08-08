@@ -2,305 +2,660 @@ import React, { useEffect, useState } from "react";
 import "../styles/estilos.css";
 
 function Usuarios() {
+
   const [usuarios, setUsuarios] = useState([]);
+
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
+  const [rol, setRol] = useState("Administrador");
+
 
   const cargarUsuarios = () => {
+
     fetch("http://localhost:4000/api/usuarios")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
+
+      .then((res)=>res.json())
+
+      .then((data)=>{
+
+        if(Array.isArray(data)){
           setUsuarios(data);
-        } else {
+        }else{
           setUsuarios([]);
         }
+
       })
-      .catch((err) => {
-        console.error("Error al cargar usuarios:", err);
+
+      .catch((err)=>{
+
+        console.error(
+          "Error al cargar usuarios:",
+          err
+        );
+
         setUsuarios([]);
+
       });
+
   };
 
-  useEffect(() => {
-    cargarUsuarios();
-  }, []);
 
-  const handleAgregar = (e) => {
+
+  useEffect(()=>{
+
+    cargarUsuarios();
+
+  },[]);
+
+
+
+
+
+  const handleAgregar = (e)=>{
+
     e.preventDefault();
 
-    if (!nombre || !email) {
-      alert("Por favor complete todos los campos");
+
+
+    if(!nombre || !email || !rol){
+
+      alert("Complete todos los campos");
+
       return;
+
     }
 
-    fetch("http://localhost:4000/api/usuarios", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ nombre, email }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        alert("Usuario registrado correctamente");
 
-        setNombre("");
-        setEmail("");
-        cargarUsuarios();
+
+    fetch("http://localhost:4000/api/usuarios",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+
+        nombre,
+        email,
+        rol
+
       })
-      .catch((err) => {
-        console.error("Error al agregar:", err);
-        alert("Error al registrar el usuario");
-      });
+
+    })
+
+    .then(res=>res.json())
+
+    .then(()=>{
+
+      alert(
+        "Usuario registrado correctamente"
+      );
+
+
+      setNombre("");
+      setEmail("");
+      setRol("Administrador");
+
+
+      cargarUsuarios();
+
+
+    })
+
+
+    .catch(err=>{
+
+      console.error(
+        "Error al agregar:",
+        err
+      );
+
+      alert(
+        "Error al registrar usuario"
+      );
+
+    });
+
+
   };
 
-  const handleEditar = (id, nombreActual, emailActual) => {
+
+
+
+
+
+
+  const handleEditar = (
+    id,
+    nombreActual,
+    emailActual,
+    rolActual
+  )=>{
+
+
     const nuevoNombre = prompt(
-      "Modificar Nombre Completo:",
+      "Modificar nombre:",
       nombreActual
     );
+
+
     const nuevoEmail = prompt(
-      "Modificar Correo Electrónico:",
+      "Modificar correo:",
       emailActual
     );
 
-    if (!nuevoNombre || !nuevoEmail) return;
 
-    fetch(`http://localhost:4000/api/usuarios/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nombre: nuevoNombre,
-        email: nuevoEmail,
-      }),
-    })
-      .then(() => {
-        alert("Usuario actualizado correctamente");
-        cargarUsuarios();
-      })
-      .catch((err) => {
-        console.error("Error al editar:", err);
-        alert("Error al actualizar el usuario");
-      });
-  };
+    const nuevoRol = prompt(
+      "Modificar rol (Administrador, Empleado o Cliente):",
+      rolActual
+    );
 
-  const handleEliminar = (id) => {
-    if (window.confirm("¿Está seguro de que desea eliminar este usuario?")) {
-      fetch(`http://localhost:4000/api/usuarios/${id}`, {
-        method: "DELETE",
-      })
-        .then(() => {
-          alert("Usuario eliminado correctamente");
-          cargarUsuarios();
-        })
-        .catch((err) => {
-          console.error("Error al eliminar:", err);
-          alert("Error al eliminar el usuario");
-        });
+
+
+    if(
+      !nuevoNombre ||
+      !nuevoEmail ||
+      !nuevoRol
+    ){
+
+      return;
+
     }
+
+
+
+
+    fetch(
+      `http://localhost:4000/api/usuarios/${id}`,
+      {
+
+        method:"PUT",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+
+        body:JSON.stringify({
+
+          nombre:nuevoNombre,
+
+          email:nuevoEmail,
+
+          rol:nuevoRol
+
+        })
+
+      }
+
+    )
+
+
+    .then(()=>{
+
+      alert(
+        "Usuario actualizado correctamente"
+      );
+
+
+      cargarUsuarios();
+
+
+    })
+
+
+    .catch(err=>{
+
+      console.error(
+        "Error al editar:",
+        err
+      );
+
+
+      alert(
+        "Error al actualizar usuario"
+      );
+
+
+    });
+
+
   };
+
+
+
+
+
+
+
+  const handleEliminar=(id)=>{
+
+
+    if(
+      window.confirm(
+        "¿Desea eliminar este usuario?"
+      )
+    ){
+
+
+      fetch(
+        `http://localhost:4000/api/usuarios/${id}`,
+        {
+          method:"DELETE"
+        }
+      )
+
+
+      .then(()=>{
+
+        alert(
+          "Usuario eliminado correctamente"
+        );
+
+
+        cargarUsuarios();
+
+      })
+
+
+      .catch(err=>{
+
+        console.error(
+          "Error al eliminar:",
+          err
+        );
+
+
+      });
+
+
+    }
+
+
+  };
+
+
+
+
+
+
+
+
 
   return (
+
     <div className="container">
+
+
       <div className="page-header">
-        <h1>Módulo de Usuarios</h1>
+
+        <h1>
+          Módulo de Usuarios
+        </h1>
+
       </div>
 
-      {/* Formulario de Registro */}
+
+
+
+
+
       <form
+
         onSubmit={handleAgregar}
+
         style={{
-          backgroundColor: "#fff",
-          padding: "20px",
-          borderRadius: "8px",
-          marginBottom: "20px",
-          display: "flex",
-          gap: "15px",
-          alignItems: "flex-end",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+
+          background:"#fff",
+
+          padding:"20px",
+
+          borderRadius:"10px",
+
+          marginBottom:"25px",
+
+          display:"grid",
+
+          gridTemplateColumns:
+          "repeat(auto-fit,minmax(220px,1fr))",
+
+          gap:"15px",
+
+          boxShadow:
+          "0 2px 8px rgba(0,0,0,.08)"
+
         }}
+
       >
-        <div style={{ flex: 1 }}>
-          <label
-            style={{
-              fontWeight: "600",
-              display: "block",
-              marginBottom: "5px",
-            }}
-          >
+
+
+
+        <div>
+
+          <label>
             Nombre Completo
           </label>
 
+
           <input
+
             type="text"
+
             value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+
+            onChange={
+              e=>setNombre(e.target.value)
+            }
+
+            placeholder="Juan Pérez"
+
             style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
+              width:"100%",
+              padding:"10px"
             }}
-            placeholder="Ej. Juan Pérez"
+
           />
+
         </div>
 
-        <div style={{ flex: 1 }}>
-          <label
-            style={{
-              fontWeight: "600",
-              display: "block",
-              marginBottom: "5px",
-            }}
-          >
+
+
+
+
+        <div>
+
+          <label>
             Correo Electrónico
           </label>
 
+
           <input
+
             type="email"
+
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-            }}
+
+            onChange={
+              e=>setEmail(e.target.value)
+            }
+
             placeholder="juan@muvic.com"
+
+            style={{
+              width:"100%",
+              padding:"10px"
+            }}
+
           />
+
         </div>
 
+
+
+
+
+
+        <div>
+
+          <label>
+            Rol
+          </label>
+
+
+          <select
+
+            value={rol}
+
+            onChange={
+              e=>setRol(e.target.value)
+            }
+
+
+            style={{
+
+              width:"100%",
+
+              padding:"10px"
+
+            }}
+
+          >
+
+            <option value="Administrador">
+              Administrador
+            </option>
+
+
+            <option value="Empleado">
+              Empleado
+            </option>
+
+
+            <option value="Cliente">
+              Cliente
+            </option>
+
+
+          </select>
+
+
+        </div>
+
+
+
+
+
+
         <button
+
           type="submit"
+
           className="btn-action"
+
           style={{
-            backgroundColor: "#ff6b00",
-            padding: "11px 25px",
+
+            background:"#ff6b00",
+
+            alignSelf:"end"
+
           }}
+
         >
+
           + Guardar Usuario
+
         </button>
+
+
+
       </form>
 
-      {/* Tabla de Usuarios */}
-      <table
-        className="modules-list"
-        style={{ width: "100%" }}
-      >
+
+
+
+
+
+
+
+
+      <table className="modules-list">
+
+
         <thead>
-          <tr
-            style={{
-              backgroundColor: "#0d233a",
-              color: "#fff",
-            }}
-          >
-            <th style={{ padding: "12px", width: "10%" }}>ID</th>
-            <th
-              style={{
-                padding: "12px",
-                textAlign: "left",
-                width: "35%",
-              }}
-            >
-              Nombre
-            </th>
-            <th
-              style={{
-                padding: "12px",
-                textAlign: "left",
-                width: "35%",
-              }}
-            >
-              Email
-            </th>
-            <th
-              style={{
-                padding: "12px",
-                textAlign: "center",
-                width: "20%",
-              }}
-            >
-              Acciones
-            </th>
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Nombre</th>
+
+            <th>Email</th>
+
+            <th>Rol</th>
+
+            <th>Acciones</th>
+
+
           </tr>
+
+
         </thead>
 
+
+
+
+
+
         <tbody>
-          {usuarios.length === 0 ? (
-            <tr>
-              <td
-                colSpan="4"
+
+
+        {
+
+        usuarios.length===0
+
+        ?
+
+        (
+
+          <tr>
+
+            <td colSpan="5">
+
+              No hay usuarios registrados.
+
+            </td>
+
+          </tr>
+
+        )
+
+
+        :
+
+        usuarios.map((u)=>(
+
+
+          <tr key={u.id}>
+
+
+            <td>
+              {u.id}
+            </td>
+
+
+            <td>
+              {u.nombre}
+            </td>
+
+
+            <td>
+              {u.email}
+            </td>
+
+
+            <td>
+
+              <strong>
+                {u.rol}
+              </strong>
+
+            </td>
+
+
+            <td>
+
+
+              <button
+
+                className="btn-action"
+
                 style={{
-                  padding: "20px",
-                  textAlign: "center",
-                  color: "#666",
+
+                  background:"#007bff",
+
+                  marginRight:"10px"
+
                 }}
+
+
+                onClick={()=>
+
+
+                  handleEditar(
+
+                    u.id,
+
+                    u.nombre,
+
+                    u.email,
+
+                    u.rol
+
+                  )
+
+
+                }
+
+
               >
-                No hay usuarios registrados o el servidor backend está desconectado.
-              </td>
-            </tr>
-          ) : (
-            usuarios.map((u) => (
-              <tr key={u.id} className="module-card">
-                <td
-                  className="module-cell"
-                  style={{ textAlign: "center" }}
-                >
-                  {u.id}
-                </td>
 
-                <td
-                  className="module-cell"
-                  style={{ fontWeight: "bold" }}
-                >
-                  {u.nombre}
-                </td>
+                Editar
 
-                <td className="module-cell">
-                  {u.email}
-                </td>
+              </button>
 
-                <td
-                  className="module-cell"
-                  style={{ textAlign: "center" }}
-                >
-                  <button
-                    className="btn-action"
-                    style={{
-                      backgroundColor: "#007bff",
-                      marginRight: "10px",
-                    }}
-                    onClick={() =>
-                      handleEditar(
-                        u.id,
-                        u.nombre,
-                        u.email
-                      )
-                    }
-                  >
-                    Editar
-                  </button>
 
-                  <button
-                    className="btn-action"
-                    style={{
-                      backgroundColor: "#dc3545",
-                    }}
-                    onClick={() => handleEliminar(u.id)}
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
+
+
+
+              <button
+
+                className="btn-action"
+
+                style={{
+
+                  background:"#dc3545"
+
+                }}
+
+
+                onClick={()=>handleEliminar(u.id)}
+
+              >
+
+                Eliminar
+
+              </button>
+
+
+
+            </td>
+
+
+          </tr>
+
+
+        ))
+
+
+        }
+
+
+
         </tbody>
+
+
       </table>
+
+
+
     </div>
+
   );
+
+
 }
+
 
 export default Usuarios;

@@ -1049,13 +1049,8 @@ app.post("/api/login",(req,res)=>{
 // ==========================================
 
 
-const PORT=4000;
+const PORT = process.env.PORT || 4000;
 
-
-app.listen(PORT,()=>{
-
-    console.log(
-        `🚀 Servidor Muvic DigiMark funcionando en http://localhost:${PORT}`
-    );
-
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Servidor Muvic DigiMark funcionando en el puerto ${PORT}`);
 });

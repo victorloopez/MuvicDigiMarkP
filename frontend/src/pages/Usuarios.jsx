@@ -12,7 +12,7 @@ function Usuarios() {
 
   const cargarUsuarios = () => {
 
-    fetch("http://localhost:4000/api/usuarios")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/usuarios")
 
       .then((res)=>res.json())
 
@@ -67,7 +67,7 @@ function Usuarios() {
 
 
 
-    fetch("http://localhost:4000/api/usuarios",{
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/usuarios",{
 
       method:"POST",
 
@@ -168,7 +168,7 @@ function Usuarios() {
 
 
     fetch(
-      `http://localhost:4000/api/usuarios/${id}`,
+      `https://muvicdigimarkp-production.up.railway.app/api/usuarios/${id}`,
       {
 
         method:"PUT",
@@ -241,7 +241,7 @@ function Usuarios() {
 
 
       fetch(
-        `http://localhost:4000/api/usuarios/${id}`,
+        `https://muvicdigimarkp-production.up.railway.app/api/usuarios/${id}`,
         {
           method:"DELETE"
         }

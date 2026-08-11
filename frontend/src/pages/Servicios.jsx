@@ -7,7 +7,7 @@ function Servicios() {
   const [precio, setPrecio] = useState("");
 
   const cargarServicios = () => {
-    fetch("http://localhost:4000/api/servicios")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/servicios")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) setServicios(data);
@@ -31,7 +31,7 @@ function Servicios() {
       return;
     }
 
-    fetch("http://localhost:4000/api/servicios", {
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/servicios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, precio: parseFloat(precio) }),
@@ -59,7 +59,7 @@ function Servicios() {
 
     if (!nuevoNombre || !nuevoPrecio) return;
 
-    fetch(`http://localhost:4000/api/servicios/${id}`, {
+    fetch(`https://muvicdigimarkp-production.up.railway.app/api/servicios/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -79,7 +79,7 @@ function Servicios() {
 
   const handleEliminar = (id) => {
     if (window.confirm("¿Está seguro de eliminar este servicio?")) {
-      fetch(`http://localhost:4000/api/servicios/${id}`, {
+      fetch(`https://muvicdigimarkp-production.up.railway.app/api/servicios/${id}`, {
         method: "DELETE",
       })
         .then(() => {

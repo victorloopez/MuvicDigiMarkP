@@ -15,7 +15,7 @@ function Comentarios() {
 
   const cargarComentarios = () => {
 
-    fetch(`http://localhost:4000/api/comentarios/${id}`)
+    fetch(`https://muvicdigimarkp-production.up.railway.app/api/comentarios/${id}`)
       .then(res => res.json())
       .then(data => {
 
@@ -45,7 +45,7 @@ function Comentarios() {
       return;
     }
 
-    fetch("http://localhost:4000/api/comentarios", {
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/comentarios", {
 
       method: "POST",
 

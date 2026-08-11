@@ -14,7 +14,7 @@ function Calificaciones() {
 
   const cargarCalificaciones = () => {
 
-    fetch(`http://localhost:4000/api/calificaciones/${id}`)
+    fetch(`https://muvicdigimarkp-production.up.railway.app/api/calificaciones/${id}`)
       .then(res => res.json())
       .then(data => {
 
@@ -39,7 +39,7 @@ function Calificaciones() {
 
     e.preventDefault();
 
-    fetch("http://localhost:4000/api/calificaciones", {
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/calificaciones", {
 
       method: "POST",
 

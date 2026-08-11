@@ -39,7 +39,7 @@ return;
 
 
 fetch(
-"http://localhost:4000/api/login",
+"https://muvicdigimarkp-production.up.railway.app/api/login",
 {
 
 method:"POST",

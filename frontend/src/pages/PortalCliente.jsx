@@ -14,7 +14,7 @@ function PortalCliente() {
 
     if (!usuario) return;
 
-    fetch(`http://localhost:4000/api/proyectos/cliente/${usuario.id}`)
+    fetch(`https://muvicdigimarkp-production.up.railway.app/api/proyectos/cliente/${usuario.id}`)
       .then(res => res.json())
       .then(data => {
 

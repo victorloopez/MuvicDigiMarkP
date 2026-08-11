@@ -55,7 +55,7 @@ function Dashboard() {
 
     // Cargar datos generales
 
-    fetch("http://localhost:4000/api/dashboard")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/dashboard")
 
       .then((res)=>res.json())
 
@@ -81,7 +81,7 @@ function Dashboard() {
     // Cargar historial reciente
 
 
-    fetch("http://localhost:4000/api/historial")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/historial")
 
       .then((res)=>res.json())
 

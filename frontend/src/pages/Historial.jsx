@@ -5,7 +5,7 @@ function Historial() {
   const [historial, setHistorial] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/historial")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/historial")
       .then((res) => res.json())
       .then((data) => setHistorial(data))
       .catch((err) => console.error(err));

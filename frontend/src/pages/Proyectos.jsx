@@ -35,7 +35,7 @@ const [clientes,setClientes]=useState([]);
   const cargarProyectos=()=>{
 
 
-    fetch("http://localhost:4000/api/proyectos")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/proyectos")
 
     .then(res=>res.json())
 
@@ -81,7 +81,7 @@ const [clientes,setClientes]=useState([]);
 
   const cargarClientes=()=>{
 
-    fetch("http://localhost:4000/api/clientes")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/clientes")
     .then(res=>res.json())
     .then(data=>{
       if(Array.isArray(data)) setClientes(data);
@@ -100,7 +100,7 @@ const cargarCalificaciones=(lista)=>{
 
 
       fetch(
-        `http://localhost:4000/api/calificaciones/${p.id}`
+        `https://muvicdigimarkp-production.up.railway.app/api/calificaciones/${p.id}`
       )
 
       .then(res=>res.json())
@@ -202,7 +202,7 @@ return;
 }
 
 fetch(
-"http://localhost:4000/api/proyectos",
+"https://muvicdigimarkp-production.up.railway.app/api/proyectos",
 {
 
 method:"POST",
@@ -283,7 +283,7 @@ cargarProyectos();
 
 
     fetch(
-      `http://localhost:4000/api/proyectos/${id}`,
+      `https://muvicdigimarkp-production.up.railway.app/api/proyectos/${id}`,
       {
 
         method:"PUT",
@@ -328,7 +328,7 @@ cargarProyectos();
 
 
       fetch(
-        `http://localhost:4000/api/proyectos/${id}`,
+        `https://muvicdigimarkp-production.up.railway.app/api/proyectos/${id}`,
         {
           method:"DELETE"
         }

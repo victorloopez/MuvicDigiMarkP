@@ -7,7 +7,7 @@ function Clientes() {
   const [email, setEmail] = useState("");
 
   const cargarClientes = () => {
-    fetch("http://localhost:4000/api/clientes")
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/clientes")
       .then((res) => res.json())
       .then((data) => setClientes(data))
       .catch((err) => {
@@ -27,7 +27,7 @@ function Clientes() {
       return alert("Por favor complete todos los campos");
     }
 
-    fetch("http://localhost:4000/api/clientes", {
+    fetch("https://muvicdigimarkp-production.up.railway.app/api/clientes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function Clientes() {
 
     if (!nuevoNombre || !nuevoEmail) return;
 
-    fetch(`http://localhost:4000/api/clientes/${id}`, {
+    fetch(`https://muvicdigimarkp-production.up.railway.app/api/clientes/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ function Clientes() {
 
   const handleEliminar = (id) => {
     if (confirm("¿Está seguro de eliminar esta empresa cliente?")) {
-      fetch(`http://localhost:4000/api/clientes/${id}`, {
+      fetch(`https://muvicdigimarkp-production.up.railway.app/api/clientes/${id}`, {
         method: "DELETE",
       })
         .then(() => {
